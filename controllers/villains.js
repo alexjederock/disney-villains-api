@@ -32,7 +32,7 @@ const saveNewVillain = async (request, response) => {
     return response.sendStatus(400)
   }
 
-  return response.status(201).send(villain)
+  return response.status(201).send({ name, movie, slug })
 }
 
 module.exports = { saveNewVillain, getVillainBySlug, getAllVillains }

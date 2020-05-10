@@ -1,10 +1,10 @@
 CREATE DATABASE villains;
 
-CREATE USER 'villians'@'localhost' IDENTIFIED WITH mysql_native_password BY 'catfish';
+CREATE USER 'villains'@'localhost' IDENTIFIED WITH mysql_native_password BY 'catfish';
 
-GRANT ALL ON villain.* TO 'villains'@'localhost';
+GRANT ALL ON villains.* TO 'villains'@'localhost';
 
-USE villain;
+USE villains;
 
 CREATE TABLE villains (
   name VARCHAR(255),
