@@ -1,38 +1,49 @@
 const models = require('../models')
 
 const getAllVillains = async (request, response) => {
-  const villains = await models.Villains.findAll({
-    attributes: ['name', 'movie', 'slug']
-  })
+  try {
+    const villains = await models.Villains.findAll({
+      attributes: ['name', 'movie', 'slug']
+    })
 
-  return response.send(villains)
+    return response.send(villains)
+  } catch (error) {
+    return response.status(500).send('Unable to get all villains, please try again')
+  }
 }
 
 const getVillainBySlug = async (request, response) => {
-  const { slug } = request.params
+  try {
+    const { slug } = request.params
 
-  const villain = await models.Villains.findOne({
-    where: { slug },
-    attributes: ['name', 'movie', 'slug']
-  })
+    const villain = await models.Villains.findOne({
+      where: { slug },
+      attributes: ['name', 'movie', 'slug']
+    })
 
-  return villain
-    ? response.send(villain)
-    : response.sendStatus(404)
+    return villain
+      ? response.send(villain)
+      : response.sendStatus(404)
+  } catch (error) {
+    return response.status(500).send('Unable to get villain, please try again')
+  }
 }
 
 const saveNewVillain = async (request, response) => {
-  const { name, movie, slug } = request.body
+  try {
+    const { name, movie, slug } = request.body
 
-  const villain = await models.Villains.create({
-    name, movie, slug
-  })
+    if (!name || !movie || !slug) {
+      return response.sendStatus(400)
+    }
+    const villain = await models.Villains.create({
+      name, movie, slug
+    })
 
-  if (!name || !movie || !slug) {
-    return response.sendStatus(400)
+    return response.status(201).send({ name, movie, slug })
+  } catch (error) {
+    return response.status(500).send('Unable to save villain, please try again')
   }
-
-  return response.status(201).send({ name, movie, slug })
 }
 
 module.exports = { saveNewVillain, getVillainBySlug, getAllVillains }
